@@ -20,7 +20,7 @@ This is **collaboration context** — preferences, infra IDs, gotchas — not pr
 
 | Resource | Value |
 |---|---|
-| S3 bucket | `xml-indent.com` (us-east-1) — to be created |
+| S3 bucket | `xml-indent.com` (us-west-2) |
 | CloudFront (xml-indent.com) | `CF_DIST_APEX` secret — to be created |
 | CloudFront (www.xml-indent.com) | `CF_DIST_WWW` secret — to be created |
 | Buy Me a Coffee | `buymeacoffee.com/vaibhav.kamble` |
