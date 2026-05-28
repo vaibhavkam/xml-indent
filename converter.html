@@ -61,14 +61,16 @@
       <option value="xml2json">XML → JSON</option>
       <option value="xml2yaml">XML → YAML</option>
     </select>
-    <button class="btn btn-secondary btn-sm" onclick="loadSample()">Sample</button>
-    <button class="btn btn-secondary btn-sm" onclick="clearAll()">Clear</button>
   </div>
 
   <div class="editor-layout two-col">
     <div class="editor-panel">
       <div class="editor-panel-header">
         <span class="editor-panel-title">Input</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="loadSample()">Sample</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear</button>
+        </div>
       </div>
       <div class="editor-with-lines">
         <div class="line-gutter" id="gutter-inputArea"><div>1</div></div>
