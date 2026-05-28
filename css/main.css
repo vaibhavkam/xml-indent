@@ -204,7 +204,7 @@ body {
   width: 34px;
   height: 34px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  border: 2px solid color-mix(in srgb, var(--primary) 35%, var(--border));
   background: var(--bg-secondary);
   color: var(--text-muted);
   cursor: pointer;
@@ -216,6 +216,17 @@ body {
 }
 
 .btn-theme:hover { background: var(--primary-light); color: var(--primary); }
+
+.nav-sister {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+.nav-sister a { display: flex; align-items: center; justify-content: center; width: 120px; height: 34px; opacity: 0.8; transition: opacity 0.15s; padding: 4px 8px; border: 2px solid color-mix(in srgb, var(--primary) 35%, var(--border)); border-radius: var(--radius-sm); background: var(--bg-secondary); }
+.nav-sister a:hover { opacity: 1; }
+.nav-sister img { width: 112px; height: auto; }
 
 /* ── Main layout ──────────────────────────────────────────────── */
 .page-wrapper {
@@ -369,7 +380,7 @@ select {
   -webkit-appearance: none;
   appearance: none;
   background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  border: 2px solid color-mix(in srgb, var(--primary) 35%, var(--border));
   color: var(--text);
   padding: 7px 28px 7px 10px;
   border-radius: var(--radius-sm);
@@ -405,7 +416,7 @@ select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 .editor-panel {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border);
+  border: 2px solid color-mix(in srgb, var(--primary) 35%, var(--border));
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg-editor);
