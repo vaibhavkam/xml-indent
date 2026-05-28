@@ -63,4 +63,6 @@
     <priority>0.3</priority>
     <lastmod>2026-05-28</lastmod>
   </url>
+  <url><loc>https://xml-indent.com/format-xml-python.html</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-05-28</lastmod></url>
+  <url><loc>https://xml-indent.com/format-xml-javascript.html</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-05-28</lastmod></url>
 </urlset>

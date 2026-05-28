@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Format XML in JavaScript — DOMParser Examples</title>
+  <meta name="description" content="Format and pretty-print XML in JavaScript using DOMParser and XMLSerializer. Full examples for browser and Node.js, with and without libraries.">
+  <meta name="keywords" content="format xml javascript, javascript xml pretty print, domparser format xml, xml beautify javascript, pretty print xml js, xml indent javascript">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/format-xml-javascript.html">
+
+  <meta property="og:title" content="How to Format XML in JavaScript — DOMParser Examples">
+  <meta property="og:description" content="Format and pretty-print XML in JavaScript using DOMParser. Full browser and Node.js examples.">
+  <meta property="og:url" content="https://xml-indent.com/format-xml-javascript.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Format XML in JavaScript",
+    "description": "Format and pretty-print XML in JavaScript using DOMParser and XMLSerializer.",
+    "step": [
+      { "@type": "HowToStep", "name": "Parse the XML string", "text": "Use new DOMParser().parseFromString(xmlString, 'application/xml') to parse XML in the browser." },
+      { "@type": "HowToStep", "name": "Serialize back to string", "text": "Use new XMLSerializer().serializeToString(doc) or a custom indent function." },
+      { "@type": "HowToStep", "name": "Add indentation", "text": "Use a recursive walk or a regex-based formatter to add newlines and indentation." }
+    ],
+    "totalTime": "PT3M"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How do I pretty print XML in JavaScript?", "acceptedAnswer": { "@type": "Answer", "text": "Use DOMParser to parse the XML, then serialize it with a custom indent function. In the browser, DOMParser is built-in. In Node.js, use the 'xmldom' or '@xmldom/xmldom' package." } },
+      { "@type": "Question", "name": "Can I format XML in Node.js without a library?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — use a regex-based formatter that inserts newlines and indentation. For production use, libraries like 'xml-formatter' or 'fast-xml-parser' are more reliable." } },
+      { "@type": "Question", "name": "What is the best library to format XML in JavaScript?", "acceptedAnswer": { "@type": "Answer", "text": "For simple formatting, 'xml-formatter' (npm) is lightweight and reliable. For full XML processing including XPath and schema validation, use 'libxmljs2'." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>How to Format XML in JavaScript</h1>
+    <p>Complete guide to pretty-printing XML in JavaScript — in the browser using <code style="background:var(--primary-light); padding:1px 6px; border-radius:3px; font-family:var(--font-mono);">DOMParser</code> and in Node.js with and without libraries.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Format XML in the Browser (DOMParser)</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The browser's built-in <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">DOMParser</code> parses XML strings into a DOM document.
+      A simple recursive function can then serialize it with indentation.
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>function formatXML(xml, indent = '  ') {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xml, 'application/xml');
+
+  function serializeNode(node, level) {
+    const pad = indent.repeat(level);
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim();
+      return text ? pad + text : '';
+    }
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const tag = node.tagName;
+      const attrs = Array.from(node.attributes)
+        .map(a => ` ${a.name}="${a.value}"`)
+        .join('');
+      const children = Array.from(node.childNodes)
+        .map(c => serializeNode(c, level + 1))
+        .filter(Boolean);
+      if (children.length === 0) return `${pad}&lt;${tag}${attrs}/&gt;`;
+      if (children.length === 1 &amp;&amp; !children[0].includes('\n')) {
+        return `${pad}&lt;${tag}${attrs}&gt;${children[0].trim()}&lt;/${tag}&gt;`;
+      }
+      return `${pad}&lt;${tag}${attrs}&gt;\n${children.join('\n')}\n${pad}&lt;/${tag}&gt;`;
+    }
+    return '';
+  }
+
+  return serializeNode(doc.documentElement, 0);
+}
+
+console.log(formatXML('&lt;root&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;/root&gt;'));</code></pre>
+
+    <h2 style="font-size:1.1rem; font-weight:600; margin:32px 0 12px;">Format XML in Node.js (regex-based, no library)</h2>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>function formatXML(xml, indent = '  ') {
+  let result = '';
+  let level = 0;
+  xml.replace(/&gt;\s*&lt;/g, '&gt;\n&lt;')
+     .split('\n')
+     .forEach(line => {
+       line = line.trim();
+       if (!line) return;
+       if (line.startsWith('&lt;/')) level--;
+       result += indent.repeat(Math.max(0, level)) + line + '\n';
+       if (line.startsWith('&lt;') &amp;&amp; !line.startsWith('&lt;/') &amp;&amp;
+           !line.endsWith('/&gt;') &amp;&amp; !line.includes('&lt;/')) level++;
+     });
+  return result.trim();
+}
+
+const xml = '&lt;root&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;/root&gt;';
+console.log(formatXML(xml));</code></pre>
+
+    <h2 style="font-size:1.1rem; font-weight:600; margin:32px 0 12px;">Format XML with xml-formatter (npm)</h2>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>// npm install xml-formatter
+import xmlFormat from 'xml-formatter';
+
+const xml = '&lt;root&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;/root&gt;';
+const formatted = xmlFormat(xml, {
+  indentation: '  ',
+  collapseContent: true
+});
+console.log(formatted);</code></pre>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Need to format XML without writing code?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste any XML into the free online formatter — instant results, no setup needed.
+    </p>
+    <a href="/" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Formatter →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I pretty print XML in JavaScript?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">In the browser, use <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">DOMParser</code> to parse and a recursive serialize function to indent. In Node.js, use the <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml-formatter</code> npm package for the simplest solution.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Can I format XML without a library in Node.js?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes — the regex-based approach above works for most standard XML. It splits on tag boundaries and tracks indentation level. For complex XML with namespaces or mixed content, use a proper parser.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the best npm package for XML formatting?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;"><code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml-formatter</code> is lightweight and widely used. <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">fast-xml-parser</code> is faster for large documents. For full XML processing, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">libxmljs2</code> has the most features.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify, convert, diff, and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="/js/theme.js"></script>
+</body>
+</html>

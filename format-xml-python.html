@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Format XML in Python — minidom and lxml Examples</title>
+  <meta name="description" content="Format and pretty-print XML in Python using xml.dom.minidom and lxml. Full examples for parsing, indenting, and writing XML files in Python 3.">
+  <meta name="keywords" content="format xml python, python xml pretty print, xml minidom, lxml format xml, python pretty print xml, xml indent python">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/format-xml-python.html">
+
+  <meta property="og:title" content="How to Format XML in Python — minidom and lxml Examples">
+  <meta property="og:description" content="Format and pretty-print XML in Python using xml.dom.minidom and lxml. Full code examples.">
+  <meta property="og:url" content="https://xml-indent.com/format-xml-python.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Format XML in Python",
+    "description": "Format and pretty-print XML in Python using xml.dom.minidom and lxml.",
+    "step": [
+      { "@type": "HowToStep", "name": "Import minidom", "text": "Import xml.dom.minidom from Python's standard library." },
+      { "@type": "HowToStep", "name": "Parse your XML", "text": "Use minidom.parseString(xml_string) to parse raw XML." },
+      { "@type": "HowToStep", "name": "Pretty-print", "text": "Call toprettyxml(indent='  ') to get a formatted string." }
+    ],
+    "totalTime": "PT2M"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How do I pretty print XML in Python?", "acceptedAnswer": { "@type": "Answer", "text": "Use xml.dom.minidom.parseString(xml_string).toprettyxml(indent='  '). This formats XML with 2-space indentation using Python's built-in library." } },
+      { "@type": "Question", "name": "How do I format an XML file in Python?", "acceptedAnswer": { "@type": "Answer", "text": "Read the file, parse with minidom.parse('file.xml'), then write back with toprettyxml(indent='  '). Or use lxml's etree.indent() for more control." } },
+      { "@type": "Question", "name": "What is the difference between minidom and lxml for XML formatting?", "acceptedAnswer": { "@type": "Answer", "text": "minidom is built into Python and requires no installation. lxml is a third-party library that is faster, handles large files better, and preserves more XML features. For simple formatting, minidom is sufficient." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>How to Format XML in Python</h1>
+    <p>Complete guide to pretty-printing and formatting XML in Python using the built-in <code style="background:var(--primary-light); padding:1px 6px; border-radius:3px; font-family:var(--font-mono);">xml.dom.minidom</code> module and the <code style="background:var(--primary-light); padding:1px 6px; border-radius:3px; font-family:var(--font-mono);">lxml</code> library.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Format XML with xml.dom.minidom (built-in)</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Python's standard library includes <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml.dom.minidom</code> — no installation needed.
+      The <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">toprettyxml()</code> method formats parsed XML with indentation.
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>import xml.dom.minidom
+
+xml_string = '&lt;root&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;/root&gt;'
+
+dom = xml.dom.minidom.parseString(xml_string)
+formatted = dom.toprettyxml(indent='  ')
+print(formatted)</code></pre>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Remove the Extra XML Declaration Line</h3>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;"><code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">toprettyxml()</code> adds <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;?xml version="1.0" ?&gt;</code> at the top. To strip it:</p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>import xml.dom.minidom
+
+dom = xml.dom.minidom.parseString(xml_string)
+lines = dom.toprettyxml(indent='  ').split('\n')
+# Skip the first line (XML declaration)
+formatted = '\n'.join(lines[1:])
+print(formatted)</code></pre>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Format an XML File</h3>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>import xml.dom.minidom
+
+# Read and reformat an XML file
+with open('data.xml', 'r') as f:
+    xml_string = f.read()
+
+dom = xml.dom.minidom.parseString(xml_string)
+formatted = dom.toprettyxml(indent='  ')
+
+with open('data_formatted.xml', 'w') as f:
+    f.write(formatted)</code></pre>
+
+    <h2 style="font-size:1.1rem; font-weight:600; margin:32px 0 12px;">Format XML with lxml (third-party)</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">lxml</code> is faster and more feature-rich than minidom. Install with <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">pip install lxml</code>.
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>from lxml import etree
+
+xml_string = b'&lt;root&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;/root&gt;'
+
+root = etree.fromstring(xml_string)
+etree.indent(root, space='  ')
+formatted = etree.tostring(root, pretty_print=True).decode()
+print(formatted)</code></pre>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Format XML from Command Line (Python one-liner)</h3>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code># Format XML file via command line
+python3 -c "
+import xml.dom.minidom, sys
+print(xml.dom.minidom.parse(sys.argv[1]).toprettyxml(indent='  '))
+" data.xml</code></pre>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Need to format XML without writing code?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste any XML into the free online formatter — instant results, no Python environment needed.
+    </p>
+    <a href="/" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Formatter →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I pretty print XML in Python?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Use <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml.dom.minidom.parseString(xml_string).toprettyxml(indent='  ')</code>. This uses Python's built-in library and requires no extra installation.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Why does toprettyxml add blank lines?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">minidom adds extra newlines between text nodes. Filter them out with: <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">'\n'.join([l for l in output.split('\n') if l.strip()])</code></p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">minidom vs lxml — which should I use?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Use minidom for simple scripts with no dependencies. Use lxml for production code, large files, or when you need XPath, XSLT, or schema validation support.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify, convert, diff, and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="/js/theme.js"></script>
+</body>
+</html>

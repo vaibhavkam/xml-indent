@@ -26,7 +26,7 @@ This is **collaboration context** — preferences, infra IDs, gotchas — not pr
 | Buy Me a Coffee | `buymeacoffee.com/vaibhav.kamble` |
 | Contact form | Web3Forms key `6007bf05-fa0f-441a-961a-5b63b82e26e1` (same as json-indent) |
 | GitHub repo | https://github.com/vaibhavkam/xml-indent |
-| GA4 | To be set up (separate property or reuse MyDailyTools account 86947416) |
+| GA4 | `G-W6V2QQHMTY` (MyDailyTools account 86947416) |
 
 ---
 
