@@ -21,8 +21,8 @@ This is **collaboration context** — preferences, infra IDs, gotchas — not pr
 | Resource | Value |
 |---|---|
 | S3 bucket | `xml-indent.com` (us-west-2) |
-| CloudFront (xml-indent.com) | `CF_DIST_APEX` secret — to be created |
-| CloudFront (www.xml-indent.com) | `CF_DIST_WWW` secret — to be created |
+| CloudFront (xml-indent.com) | `E2LO8C42GD5N0D` |
+| CloudFront (www.xml-indent.com) | `EUTYSP62F1O4K` |
 | Buy Me a Coffee | `buymeacoffee.com/vaibhav.kamble` |
 | Contact form | Web3Forms key `6007bf05-fa0f-441a-961a-5b63b82e26e1` (same as json-indent) |
 | GitHub repo | https://github.com/vaibhavkam/xml-indent |
