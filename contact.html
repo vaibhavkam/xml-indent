@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — xml-indent.com</title>
+  <meta name="description" content="Contact the team behind xml-indent.com. Report bugs, suggest features, or ask questions.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/contact.html">
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <style>
+    .contact-wrap { max-width:560px; margin:0 auto; padding:40px 20px; }
+    .contact-wrap h1 { font-size:1.8rem; font-weight:600; margin-bottom:8px; }
+    .contact-wrap .sub { color:var(--text-muted); font-size:0.95rem; margin-bottom:32px; line-height:1.7; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:0.875rem; font-weight:500; margin-bottom:6px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm);
+      background:var(--bg-editor); color:var(--text); font-family:var(--font); font-size:0.9rem;
+      outline:none; transition:border-color 0.15s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--primary); }
+    .form-group textarea { resize:vertical; min-height:120px; line-height:1.6; }
+    .form-success { display:none; background:rgba(5,150,105,0.08); border:1px solid rgba(5,150,105,0.3); border-radius:var(--radius-sm); padding:16px; color:var(--success); font-size:0.9rem; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot"></div></aside>
+<div style="min-width:0;">
+
+  <div class="contact-wrap">
+    <h1>Contact</h1>
+    <p class="sub">Report a bug, suggest a feature, or just say hello. I read every message and typically respond within a few days.</p>
+
+    <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
+      <input type="hidden" name="access_key" value="6007bf05-fa0f-441a-961a-5b63b82e26e1">
+      <input type="hidden" name="subject" value="xml-indent.com contact form">
+      <input type="hidden" name="redirect" value="https://xml-indent.com/contact.html?sent=1">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" name="type">
+          <option value="bug">Bug report</option>
+          <option value="feature">Feature suggestion</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Describe the issue or idea..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send message</button>
+    </form>
+
+    <div class="form-success" id="formSuccess">
+      ✓ Message sent! I'll get back to you soon.
+    </div>
+  </div>
+
+</div>
+<aside class="side-col"><div class="side-slot"></div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+<script>
+  if (window.location.search.includes('sent=1')) {
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XPath Tester — Test XPath Expressions Online Free</title>
+  <meta name="description" content="Test XPath expressions online — free. Paste XML and run XPath queries to see matching nodes instantly. Supports XPath 1.0 axis, functions, and predicates. 100% browser-based.">
+  <meta name="keywords" content="xpath tester, xpath evaluator, test xpath online, xpath checker, xpath query tester, xpath online, xml xpath tester">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/xpath.html">
+
+  <meta property="og:title" content="XPath Tester — Test XPath Expressions Online Free">
+  <meta property="og:description" content="Test XPath expressions against real XML instantly. Supports axes, predicates, functions. Free and 100% browser-based.">
+  <meta property="og:url" content="https://xml-indent.com/xpath.html">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "XPath Tester",
+    "url": "https://xml-indent.com/xpath.html",
+    "description": "Free online XPath expression tester and evaluator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/xpath.html" class="active">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+<main>
+  <div class="page-header">
+    <h1>XPath Tester — Test XPath Expressions Online</h1>
+    <p>Paste XML, enter an XPath expression, and see all matching nodes instantly. Free, browser-based, no signup.</p>
+  </div>
+
+  <!-- XPath expression input bar -->
+  <div style="display:flex; gap:8px; margin-bottom:16px; align-items:center;">
+    <label style="font-size:0.85rem; font-weight:600; color:var(--text-muted); white-space:nowrap;">XPath:</label>
+    <input
+      type="text"
+      id="xpathExpr"
+      placeholder='e.g. //book[@category="fiction"]/title'
+      style="flex:1; padding:8px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:0.9rem; background:var(--bg-editor); color:var(--text); outline:none;"
+      oninput="runXPath()"
+    >
+    <button class="btn btn-primary btn-sm" onclick="runXPath()">Run</button>
+    <button class="btn btn-secondary btn-sm" onclick="loadSample()">Sample</button>
+    <button class="btn btn-secondary btn-sm" onclick="clearAll()">Clear</button>
+  </div>
+
+  <div class="editor-layout two-col">
+    <!-- Input -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">XML Input</span>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-inputXML"><div>1</div></div>
+        <textarea
+          id="inputXML"
+          placeholder='Paste your XML here...'
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="inputStatus" class="status-badge idle"></span>
+        <span id="inputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">XPath Result</span>
+      </div>
+      <div id="resultArea" class="output-area" style="white-space:normal; overflow:auto; padding:0;">
+        <div style="padding:20px; color:var(--text-muted); font-size:0.95rem;">Enter an XPath expression above and paste XML on the left.</div>
+      </div>
+      <div class="status-bar">
+        <span id="outputStatus" class="status-badge idle"></span>
+      </div>
+    </div>
+  </div>
+
+  <section style="margin-top:48px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">XPath Quick Reference</h2>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:16px 0 8px;">Basic Expressions</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
+      <thead>
+        <tr style="background:var(--primary-light);">
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Expression</th>
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Selects</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--text-muted);">
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">nodename</td><td style="padding:7px 12px; border:1px solid var(--border);">All child nodes named "nodename"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">/root</td><td style="padding:7px 12px; border:1px solid var(--border);">Root element named "root"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book</td><td style="padding:7px 12px; border:1px solid var(--border);">All &lt;book&gt; elements anywhere in document</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">.</td><td style="padding:7px 12px; border:1px solid var(--border);">Current node</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">..</td><td style="padding:7px 12px; border:1px solid var(--border);">Parent of current node</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">@lang</td><td style="padding:7px 12px; border:1px solid var(--border);">Attribute named "lang"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">*</td><td style="padding:7px 12px; border:1px solid var(--border);">All element children</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">@*</td><td style="padding:7px 12px; border:1px solid var(--border);">All attributes</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">text()</td><td style="padding:7px 12px; border:1px solid var(--border);">Text node children</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Predicates (Filters)</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
+      <thead>
+        <tr style="background:var(--primary-light);">
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Expression</th>
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Selects</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--text-muted);">
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[1]</td><td style="padding:7px 12px; border:1px solid var(--border);">First &lt;book&gt; element</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[last()]</td><td style="padding:7px 12px; border:1px solid var(--border);">Last &lt;book&gt; element</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[@lang]</td><td style="padding:7px 12px; border:1px solid var(--border);">&lt;book&gt; with a "lang" attribute</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[@lang='en']</td><td style="padding:7px 12px; border:1px solid var(--border);">&lt;book&gt; where lang equals "en"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[price>10]</td><td style="padding:7px 12px; border:1px solid var(--border);">&lt;book&gt; where price child is &gt; 10</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">//book[contains(@id,'1')]</td><td style="padding:7px 12px; border:1px solid var(--border);">&lt;book&gt; whose id contains "1"</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Useful Functions</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
+      <thead>
+        <tr style="background:var(--primary-light);">
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Function</th>
+          <th style="text-align:left; padding:8px 12px; border:1px solid var(--border); font-weight:600;">Returns</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--text-muted);">
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">count(//book)</td><td style="padding:7px 12px; border:1px solid var(--border);">Number of &lt;book&gt; elements</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">string(//title)</td><td style="padding:7px 12px; border:1px solid var(--border);">Text content of first &lt;title&gt;</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">contains(text(),'foo')</td><td style="padding:7px 12px; border:1px solid var(--border);">True if text contains "foo"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">starts-with(@id,'a')</td><td style="padding:7px 12px; border:1px solid var(--border);">True if id attribute starts with "a"</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">normalize-space(//name)</td><td style="padding:7px 12px; border:1px solid var(--border);">Text with leading/trailing spaces trimmed</td></tr>
+        <tr><td style="padding:7px 12px; border:1px solid var(--border); font-family:var(--font-mono);">sum(//price)</td><td style="padding:7px 12px; border:1px solid var(--border);">Sum of all &lt;price&gt; values</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is XPath?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">XPath (XML Path Language) is a query language for selecting nodes from an XML document. It uses path-like expressions to navigate the element and attribute hierarchy. XPath is used in XSLT, XML Schema validation, web scraping, and testing frameworks.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Which XPath version does this support?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">This tool uses the browser's built-in XPath 1.0 implementation. XPath 1.0 covers the vast majority of real-world use cases including axes, predicates, and all standard functions.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the difference between / and //?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;"><code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">/</code> selects from the root, requiring you to specify the full path. <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//</code> selects matching nodes anywhere in the document, regardless of their position in the hierarchy.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is my data safe?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. All processing happens in your browser. Your XML and XPath expressions are never sent to any server.</p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is XPath?", "acceptedAnswer": { "@type": "Answer", "text": "XPath is a query language for selecting nodes from an XML document using path-like expressions. It is used in XSLT, XML Schema validation, web scraping, and testing frameworks." } },
+      { "@type": "Question", "name": "Which XPath version does this support?", "acceptedAnswer": { "@type": "Answer", "text": "This tool uses the browser's built-in XPath 1.0 implementation, covering axes, predicates, and all standard functions." } },
+      { "@type": "Question", "name": "What is the difference between / and //?", "acceptedAnswer": { "@type": "Answer", "text": "/ selects from the root, requiring a full path. // selects matching nodes anywhere in the document." } }
+    ]
+  }
+  </script>
+</main>
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="js/line-numbers.js"></script>
+<script src="js/xpath.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+</html>

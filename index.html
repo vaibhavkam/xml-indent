@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML Formatter — Format & Beautify XML Online Free</title>
+  <meta name="description" content="Format XML online — free. Paste minified or raw XML to get clean, indented output instantly. Validates syntax and highlights errors. 100% browser-based, no signup.">
+  <meta name="keywords" content="xml formatter, format xml, xml beautifier, xml pretty print, indent xml, xml indenter, xml formatter online, format xml online free">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/">
+
+  <meta property="og:title" content="XML Formatter — Format & Beautify XML Online Free">
+  <meta property="og:description" content="Format XML online — free. Paste minified or raw XML to get clean, indented output instantly. Validates syntax and highlights errors. No signup required.">
+  <meta property="og:url" content="https://xml-indent.com/">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="XML Formatter — Format & Beautify XML Online Free">
+  <meta name="twitter:description" content="Format XML online — free. Paste minified or raw XML to get clean, indented output. Validates syntax, highlights errors. 100% browser-based.">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "XML Formatter",
+    "url": "https://xml-indent.com/",
+    "description": "Free online XML formatter, beautifier, and validator. Format, indent, and pretty-print XML instantly in your browser.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": ["XML formatting", "XML validation", "Indentation control", "Download as .xml file", "Dark mode", "Syntax error highlighting"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "XML Indent",
+    "url": "https://xml-indent.com/",
+    "description": "Free XML tools for developers — formatter, validator, minifier, and XPath tester"
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+<main>
+  <div class="page-header">
+    <h1>XML Formatter — Format & Beautify XML Online</h1>
+    <p>Paste your XML to format, view, and validate it instantly. Free, fast, works in your browser. Also: <a href="/validator.html" style="color:var(--primary);">XML Validator</a> · <a href="/minifier.html" style="color:var(--primary);">XML Minifier</a> · <a href="/xpath.html" style="color:var(--primary);">XPath Tester</a></p>
+  </div>
+
+  <div class="editor-layout two-col">
+    <!-- Input -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Input</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="loadSample()">Sample</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-inputXML"><div>1</div></div>
+        <textarea
+          id="inputXML"
+          placeholder='Paste your XML here, e.g. &lt;root&gt;&lt;item id="1"&gt;value&lt;/item&gt;&lt;/root&gt;'
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="inputStatus" class="status-badge idle"></span>
+        <span id="inputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Output</span>
+        <div class="editor-panel-actions">
+          <select id="indentSize" onchange="formatXML()" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:4px 24px 4px 8px; font-size:0.8rem; border-radius:var(--radius-sm); cursor:pointer; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 6px center; appearance:none;">
+            <option value="2">2 spaces</option>
+            <option value="4">4 spaces</option>
+            <option value="tab">Tab</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="copyOutput()">Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="downloadOutput()">Download</button>
+        </div>
+      </div>
+      <div id="outputArea" class="output-area" tabindex="0" style="white-space:pre; overflow:auto; cursor:text; user-select:text; outline:none; padding:16px;"><span style="color:var(--text-muted); font-style:normal;">Formatted XML will appear here...</span></div>
+      <div class="status-bar">
+        <span id="outputStatus" class="status-badge idle"></span>
+        <span id="outputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO content -->
+  <section style="margin-top:48px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What is an XML Formatter?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      An <strong>XML formatter</strong> (also called an XML beautifier or XML pretty printer) takes compact or minified XML
+      and adds indentation and line breaks to make it human-readable. This free online XML formatter supports all standard
+      XML including namespaces, CDATA sections, attributes, and comments. Choose 2-space, 4-space, or tab indentation.
+      The tool validates your XML as you type and highlights the exact line of any syntax errors.
+      <strong>Everything runs entirely in your browser — your data never leaves your device.</strong>
+    </p>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">XML Formatter vs XML Beautifier vs XML Indenter</h3>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      These terms are interchangeable. XML formatter, XML beautifier, XML pretty printer, and XML indenter all describe
+      the same operation: adding whitespace and line breaks to make XML readable. This tool does all of them.
+      If you need the opposite — removing whitespace — use the <a href="/minifier.html" style="color:var(--primary);">XML Minifier</a>.
+    </p>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">How to format XML in Python</h3>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Use <code style="background:var(--primary-light); padding:1px 6px; border-radius:3px; font-family:var(--font-mono);">xml.dom.minidom</code> to pretty-print XML in Python:
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>import xml.dom.minidom
+dom = xml.dom.minidom.parseString(xml_string)
+print(dom.toprettyxml(indent="  "))</code></pre>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">How to format XML in JavaScript</h3>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>const serializer = new XMLSerializer();
+const parser = new DOMParser();
+const doc = parser.parseFromString(xmlString, 'application/xml');
+// Use a custom indent function or a library like xml-formatter</code></pre>
+
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px; padding-left:20px;">
+      <li>Format and pretty-print XML instantly — no signup required</li>
+      <li>Validate XML syntax with exact error line number</li>
+      <li>Supports namespaces, CDATA, comments, and processing instructions</li>
+      <li>Copy formatted XML to clipboard or download as a file</li>
+      <li>Works offline — 100% client-side, no data sent to any server</li>
+    </ul>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Other Free XML Tools</h2>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; padding-left:20px;">
+      <li><a href="/validator.html" style="color:var(--primary);">XML Validator</a> — check XML syntax and find errors with exact line numbers</li>
+      <li><a href="/minifier.html" style="color:var(--primary);">XML Minifier</a> — strip whitespace to compress XML for APIs and reduce payload size</li>
+      <li><a href="/xpath.html" style="color:var(--primary);">XPath Tester</a> — test XPath expressions against your XML and see matching nodes instantly</li>
+    </ul>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Sister Tools</h2>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; padding-left:20px;">
+      <li><a href="https://json-indent.com/" style="color:var(--primary);">JSON Indent</a> — free JSON formatter, validator, minifier, and diff tool</li>
+      <li><a href="https://yaml-indent.com/" style="color:var(--primary);">YAML Indent</a> — free YAML formatter, validator, and YAML↔JSON converter</li>
+    </ul>
+  </section>
+
+  <!-- FAQ -->
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is an XML formatter?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">An XML formatter takes minified or unformatted XML and adds indentation and line breaks to make it human-readable. Also called an XML beautifier or XML indenter.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does this tool store my data?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">No. All processing happens entirely in your browser using the built-in DOM parser. Your XML data is never sent to any server.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What XML is supported?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">This tool supports all standard XML 1.0 including namespaces, CDATA sections, XML comments, processing instructions, and all attribute types. HTML-style self-closing tags for non-void elements are not valid XML.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the difference between XML and HTML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">XML is a strict markup language requiring every tag to be closed, while HTML has predefined tags and looser rules. XML is used for data exchange (APIs, config files, SOAP); HTML is for web documents. XML uses custom tag names; HTML uses a fixed set (div, p, span, etc.).</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I reduce XML file size?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Use our <a href="/minifier.html" style="color:var(--primary);">XML Minifier</a> to strip all whitespace and compress XML to the smallest valid string.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Can I test XPath expressions here?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes — use the dedicated <a href="/xpath.html" style="color:var(--primary);">XPath Tester</a> to run XPath expressions against your XML and see all matching nodes, their types, and content.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I format XML in Python?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Use <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml.dom.minidom.parseString(xml).toprettyxml(indent="  ")</code> to pretty-print XML in Python. For browser-based formatting without writing code, paste your XML above.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Can I format large XML files?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. This tool processes XML entirely in your browser with no upload limits. Files up to a few megabytes format instantly on modern hardware.</p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is an XML formatter?", "acceptedAnswer": { "@type": "Answer", "text": "An XML formatter takes minified or unformatted XML and adds indentation and line breaks to make it human-readable. Also called an XML beautifier or XML indenter." } },
+      { "@type": "Question", "name": "Does this tool store my data?", "acceptedAnswer": { "@type": "Answer", "text": "No. All processing happens entirely in your browser. Your XML data is never sent to any server." } },
+      { "@type": "Question", "name": "What XML is supported?", "acceptedAnswer": { "@type": "Answer", "text": "All standard XML 1.0 including namespaces, CDATA sections, XML comments, processing instructions, and all attribute types." } },
+      { "@type": "Question", "name": "How do I format XML in Python?", "acceptedAnswer": { "@type": "Answer", "text": "Use xml.dom.minidom.parseString(xml).toprettyxml(indent='  ') to pretty-print XML in Python." } },
+      { "@type": "Question", "name": "How do I reduce XML file size?", "acceptedAnswer": { "@type": "Answer", "text": "Use the XML Minifier at xml-indent.com/minifier.html to strip all whitespace and compress XML." } },
+      { "@type": "Question", "name": "Can I test XPath expressions?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, use the XPath Tester at xml-indent.com/xpath.html to run XPath expressions against your XML." } }
+    ]
+  }
+  </script>
+</main>
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/line-numbers.js"></script>
+<script src="js/formatter.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+</html>

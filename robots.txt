@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xml-indent.com/sitemap.xml

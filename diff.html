@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML Diff — Compare Two XML Files Online Free</title>
+  <meta name="description" content="Compare two XML documents online — free. Instantly highlight added, removed, and changed elements and attributes with deep recursive comparison. 100% browser-based, no signup.">
+  <meta name="keywords" content="xml diff, compare xml, xml compare, xml difference, xml diff online, compare two xml, xml comparison tool">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/diff.html">
+
+  <meta property="og:title" content="XML Diff — Compare Two XML Files Online Free">
+  <meta property="og:description" content="Compare two XML documents online — free. Instantly highlight added, removed, and changed elements and attributes. 100% browser-based.">
+  <meta property="og:url" content="https://xml-indent.com/diff.html">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <style>
+    .diff-added   { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+    .diff-removed { background: color-mix(in srgb, var(--error)   12%, transparent); color: var(--error); }
+    .diff-changed { background: color-mix(in srgb, var(--warning)  12%, transparent); color: var(--warning); }
+    .diff-line    { display: block; padding: 1px 4px; border-radius: 2px; margin: 1px 0; font-family: var(--font-mono); font-size: 0.875rem; }
+    .diff-key     { font-weight: 600; }
+    .diff-summary { display: flex; gap: 16px; font-size: 0.875rem; flex-wrap: wrap; }
+    .diff-summary span { display: flex; align-items: center; gap: 5px; font-weight: 500; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "XML Diff",
+    "url": "https://xml-indent.com/diff.html",
+    "description": "Free online XML diff tool. Compare two XML documents side by side and highlight added, removed, and changed elements and attributes.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": ["Deep recursive element comparison", "Attribute diff", "Added/removed/changed highlighting", "Nested element support"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html" class="active">Diff</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+<main>
+  <div class="page-header">
+    <h1>XML Diff — Compare Two XML Documents Online Free</h1>
+    <p>Paste two XML documents to compare them side by side and highlight every added, removed, and changed element and attribute.</p>
+  </div>
+
+  <!-- Two input panels -->
+  <div class="editor-layout two-col" style="margin-bottom:16px;">
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Source</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="clearSource()">Clear</button>
+        </div>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-xmlA"><div>1</div></div>
+        <textarea
+          id="xmlA"
+          placeholder='Paste original XML here...'
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="statusA" class="status-badge idle"></span>
+        <span id="statsA" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Target</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="clearTarget()">Clear</button>
+        </div>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-xmlB"><div>1</div></div>
+        <textarea
+          id="xmlB"
+          placeholder='Paste modified XML here...'
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="statusB" class="status-badge idle"></span>
+        <span id="statsB" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diff result -->
+  <div class="editor-panel" id="resultPanel" style="display:none;">
+    <div class="editor-panel-header">
+      <span class="editor-panel-title">Differences</span>
+      <div class="editor-panel-actions">
+        <div class="diff-summary" id="diffSummary"></div>
+      </div>
+    </div>
+    <div id="diffOutput" class="output-area" style="white-space:normal; height:auto; min-height:0; padding:12px 16px;"></div>
+  </div>
+
+  <div id="errorMsg" class="error-msg"></div>
+
+  <section style="margin-top:48px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What is XML Diff?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      An <strong>XML diff</strong> compares two XML documents and identifies exactly what changed: elements added, removed,
+      or modified, and attributes that changed value. Unlike a plain text diff, an XML diff understands document structure —
+      it compares elements by tag name and path, not by line position, so reformatting the XML without changing its content
+      produces no false differences. This free online XML diff tool highlights every change in green (added), red (removed),
+      and amber (changed). Everything runs in your browser — no data is ever sent to any server.
+    </p>
+
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">When to Compare XML Documents</h3>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; padding-left:20px;">
+      <li><strong>SOAP API development</strong> — compare request/response envelopes before and after a service change</li>
+      <li><strong>Configuration management</strong> — audit XML config differences between environments (Spring, Maven, Ant)</li>
+      <li><strong>Android resources</strong> — compare layout or string resource files across branches</li>
+      <li><strong>Data migration</strong> — verify an XML transformation preserved all elements and attributes correctly</li>
+      <li><strong>RSS/Atom feeds</strong> — track changes in a feed over time</li>
+    </ul>
+
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Before comparing, make sure both XML documents are valid using the <a href="/validator.html" style="color:var(--primary);">XML Validator</a>.
+      To format XML for easier reading, use the <a href="/" style="color:var(--primary);">XML Formatter</a>.
+    </p>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What does XML Diff show?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">It shows elements and attributes that were added (+), removed (−), or changed (~) between the source and target XML. Comparison is recursive — nested elements and their attributes are all checked.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does formatting affect the diff?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">No. This tool parses both documents into a DOM tree and compares structure and content — not text. Indentation differences, extra whitespace, or re-ordered attributes on the same element do not produce false differences.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the difference between an XML diff and a text diff?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">A text diff compares line by line — reformatting or reindenting XML produces many false positives. An XML diff understands the document model, so it only flags meaningful structural or content changes.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is my data safe?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. All processing runs in your browser. Your XML documents are never sent to any server.</p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What does XML Diff show?", "acceptedAnswer": { "@type": "Answer", "text": "It shows elements and attributes added, removed, or changed between the source and target XML, with recursive comparison of nested elements." } },
+      { "@type": "Question", "name": "Does formatting affect the diff?", "acceptedAnswer": { "@type": "Answer", "text": "No. The tool parses both documents and compares DOM structure, not text lines. Indentation differences do not produce false differences." } },
+      { "@type": "Question", "name": "What is the difference between an XML diff and a text diff?", "acceptedAnswer": { "@type": "Answer", "text": "A text diff compares line by line and flags reformatting as differences. An XML diff understands document structure and only flags meaningful structural or content changes." } },
+      { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All processing runs in your browser. Your XML is never sent to any server." } }
+    ]
+  }
+  </script>
+</main>
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify, diff, and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="js/line-numbers.js"></script>
+<script src="js/diff.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+</html>

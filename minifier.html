@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML Minifier — Minify & Compress XML Online Free</title>
+  <meta name="description" content="Minify XML online — free. Strip whitespace and compress XML to its smallest valid form instantly. 100% browser-based, no signup.">
+  <meta name="keywords" content="xml minifier, minify xml, compress xml, xml compressor, minimize xml, xml minifier online">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/minifier.html">
+
+  <meta property="og:title" content="XML Minifier — Minify & Compress XML Online Free">
+  <meta property="og:description" content="Minify XML online — free. Strip whitespace and compress XML to its smallest valid form. No signup required.">
+  <meta property="og:url" content="https://xml-indent.com/minifier.html">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "XML Minifier",
+    "url": "https://xml-indent.com/minifier.html",
+    "description": "Free online XML minifier and compressor",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html" class="active">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+<main>
+  <div class="page-header">
+    <h1>XML Minifier — Compress XML Online Free</h1>
+    <p>Paste your XML to strip all whitespace and compress it to the smallest valid form. Free, instant, browser-based.</p>
+  </div>
+
+  <div class="editor-layout two-col">
+    <!-- Input -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Input</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="loadSample()">Sample</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-inputXML"><div>1</div></div>
+        <textarea
+          id="inputXML"
+          placeholder='Paste your XML here to minify...'
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="inputStatus" class="status-badge idle"></span>
+        <span id="inputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Output</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="copyOutput()">Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="downloadOutput()">Download</button>
+        </div>
+      </div>
+      <div id="outputArea" class="output-area" tabindex="0" style="white-space:pre-wrap; word-break:break-all; overflow:auto; cursor:text; user-select:text; outline:none; padding:16px;"><span style="color:var(--text-muted);">Minified XML will appear here...</span></div>
+      <div class="status-bar">
+        <span id="outputStatus" class="status-badge idle"></span>
+        <span id="outputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+  </div>
+
+  <section style="margin-top:48px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What is XML Minification?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      <strong>XML minification</strong> removes unnecessary whitespace — indentation, line breaks, and spaces between tags —
+      to produce the smallest possible XML string that is still syntactically valid. Minified XML is commonly used in
+      SOAP API requests, XML-based message queues, Android resource files compiled for deployment, and any situation where
+      payload size matters. This tool also removes XML comments (which are never required for processing) and collapses
+      empty elements to self-closing form (<code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;tag/&gt;</code>).
+      <strong>Everything runs entirely in your browser.</strong>
+    </p>
+
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px; padding-left:20px;">
+      <li>Strips all whitespace-only text nodes between elements</li>
+      <li>Removes XML comments (not needed for processing)</li>
+      <li>Collapses empty elements to self-closing form</li>
+      <li>Shows exact byte savings and compression percentage</li>
+      <li>To restore readability, use the <a href="/" style="color:var(--primary);">XML Formatter</a></li>
+    </ul>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does minified XML still work in parsers?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. Whitespace between elements is not significant in XML (unless preserved with xml:space="preserve"). Any standards-compliant XML parser will process minified XML identically to formatted XML.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Are XML comments removed?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. XML comments are stripped during minification since they serve no processing purpose and add size. If you need to preserve comments, use the formatter instead.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is my data safe?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. All processing happens entirely in your browser. No data is sent to any server.</p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Does minified XML still work in parsers?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Whitespace between elements is not significant in XML. Any standards-compliant XML parser processes minified and formatted XML identically." } },
+      { "@type": "Question", "name": "Are XML comments removed?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. XML comments are stripped since they serve no processing purpose and add size." } },
+      { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All processing happens entirely in your browser. No data is sent to any server." } }
+    ]
+  }
+  </script>
+</main>
+<aside class="side-col">
+  <div class="side-slot">Ad<br>120×600</div>
+</aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="js/line-numbers.js"></script>
+<script src="js/minifier.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+</html>

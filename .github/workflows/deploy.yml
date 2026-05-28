@@ -1,0 +1,70 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Sync HTML files (short TTL)
+        run: |
+          aws s3 sync . s3://xml-indent.com \
+            --exclude "*" \
+            --include "*.html" \
+            --content-type "text/html; charset=utf-8" \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --delete
+
+      - name: Sync CSS files (long TTL)
+        run: |
+          aws s3 sync css/ s3://xml-indent.com/css/ \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Sync JS files (long TTL)
+        run: |
+          aws s3 sync js/ s3://xml-indent.com/js/ \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Sync images (medium TTL)
+        run: |
+          aws s3 sync img/ s3://xml-indent.com/img/ \
+            --cache-control "public, max-age=2592000"
+
+      - name: Sync remaining files (sitemap, robots, etc.)
+        run: |
+          aws s3 sync . s3://xml-indent.com \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "*.iml" \
+            --exclude "*.html" \
+            --exclude "css/*" \
+            --exclude "js/*" \
+            --exclude "img/*" \
+            --cache-control "public, max-age=3600, must-revalidate" \
+            --delete
+
+      - name: Invalidate CloudFront cache (xml-indent.com)
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DIST_APEX }} \
+            --paths "/*"
+
+      - name: Invalidate CloudFront cache (www.xml-indent.com)
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DIST_WWW }} \
+            --paths "/*"
