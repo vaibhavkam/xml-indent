@@ -1,5 +1,33 @@
 'use strict';
-document.addEventListener('DOMContentLoaded', () => initLineNumbers('inputXML'));
+document.addEventListener('DOMContentLoaded', () => {
+  initLineNumbers('inputXML');
+
+  document.getElementById('outputArea').addEventListener('mousedown', function() {
+    this.focus();
+  });
+
+  document.getElementById('outputArea').addEventListener('keydown', e => {
+    const isMac = navigator.userAgentData
+      ? navigator.userAgentData.platform.toUpperCase().includes('MAC')
+      : /Mac|iPhone|iPod|iPad/.test(navigator.platform);
+    const mod = isMac ? e.metaKey : e.ctrlKey;
+    if (!mod) return;
+    if (e.key === 'a' || e.key === 'A') {
+      e.preventDefault();
+      const range = document.createRange();
+      range.selectNodeContents(outputEl);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+    if (e.key === 'c' || e.key === 'C') {
+      const sel = window.getSelection();
+      if (sel && sel.toString()) return;
+      e.preventDefault();
+      copyOutput();
+    }
+  });
+});
 
 const inputEl      = document.getElementById('inputXML');
 const outputEl     = document.getElementById('outputArea');
