@@ -624,6 +624,10 @@ footer {
   max-width: 300px;
 }
 
+.footer-col {
+  min-width: 0;
+}
+
 .footer-col h3 {
   font-size: 0.8rem;
   font-weight: 600;
@@ -660,6 +664,15 @@ footer {
   color: #4d8a84;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
