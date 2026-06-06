@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How XML Indentation Works (and Why It Matters)</title>
+  <meta name="description" content="XML whitespace between elements is usually insignificant, but not always. Learn how XML indentation works, how formatters pretty-print it, and which indent style to choose.">
+  <meta name="keywords" content="xml indentation, indent xml, xml whitespace, xml pretty print, xml formatting, xml indent size, xml indenter">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/how-xml-indentation-works.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="How XML Indentation Works (and Why It Matters)">
+  <meta property="og:description" content="XML whitespace between elements is usually insignificant, but not always. Learn how indentation works and which style to choose.">
+  <meta property="og:url" content="https://xml-indent.com/guides/how-xml-indentation-works.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Does indentation change the meaning of an XML document?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not. Whitespace between elements is normally insignificant and most parsers ignore it. But whitespace inside an element with text content is significant by default, so a formatter that adds line breaks inside such an element can change the data. Good XML formatters only re-indent element-only content and leave mixed/text content untouched." } },
+      { "@type": "Question", "name": "What is the standard indentation for XML?", "acceptedAnswer": { "@type": "Answer", "text": "There is no single mandatory standard. Two spaces is the most common choice for XML files in web and config contexts; four spaces is common in Java and .NET projects. Visual Studio defaults to four-space indentation for XML, while VS Code and most web tooling default to two." } },
+      { "@type": "Question", "name": "Why does my formatted XML differ from the original whitespace?", "acceptedAnswer": { "@type": "Answer", "text": "A formatter parses the XML into a node tree, discards insignificant inter-element whitespace, then re-serializes with consistent indentation. The result is functionally identical for element-only content, but the original whitespace layout is replaced. To preserve significant whitespace, use xml:space=\"preserve\" on the relevant element." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>How XML Indentation Works (and Why It Matters)</h1>
+    <p>Whitespace between XML elements is usually ignored by parsers, but inside elements it can be data. Here's what's actually happening when you indent XML.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Whitespace in the XML specification</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The XML 1.0 specification treats whitespace more carefully than JSON does. The four whitespace characters — space (U+0020), tab (U+0009), carriage return (U+000D), and line feed (U+000A) — can appear between markup such as tags, and in most documents this <em>inter-element whitespace</em> carries no meaning. When an element contains only child elements, the spaces and newlines between those children are there purely for human readability.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      The important difference from JSON: in XML, whitespace inside an element that holds text is <em>significant</em> by default. The content <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;name&gt;Alice Smith&lt;/name&gt;</code> contains a space that is part of the data, and a parser must preserve it. This is why blindly adding indentation to XML is riskier than with JSON — you can change the data if you reformat the inside of a text element.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      XML also gives authors explicit control with the <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml:space</code> attribute. Setting <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml:space="preserve"</code> on an element tells processors to keep all whitespace inside it exactly as written — useful for things like code samples or poetry embedded in XML.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">The two extremes: minified and formatted</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Consider this XML describing a user, with all insignificant whitespace removed:
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px;"><strong>Minified</strong> — one line:</p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>&lt;user&gt;&lt;name&gt;Alice&lt;/name&gt;&lt;age&gt;30&lt;/age&gt;&lt;roles&gt;&lt;role&gt;admin&lt;/role&gt;&lt;role&gt;editor&lt;/role&gt;&lt;/roles&gt;&lt;/user&gt;</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;"><strong>Formatted with 2 spaces:</strong></p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>&lt;user&gt;
+  &lt;name&gt;Alice&lt;/name&gt;
+  &lt;age&gt;30&lt;/age&gt;
+  &lt;roles&gt;
+    &lt;role&gt;admin&lt;/role&gt;
+    &lt;role&gt;editor&lt;/role&gt;
+  &lt;/roles&gt;
+&lt;/user&gt;</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Both parse to the same element tree. Notice the formatter put each <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;role&gt;</code> on its own line but kept the text <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">admin</code> tight against its tags — it indents element-only content but never reflows text content, because that text could be significant.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">How indentation scales with nesting depth</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Each nesting level adds one unit of indentation. With 2-space indentation, the root has zero leading spaces, its children have 2, grandchildren 4, and so on. XML tends to nest deeply — namespaced configuration files and SOAP envelopes routinely reach 6–10 levels — so the indent unit compounds quickly. At depth 8 with 4-space indentation, the innermost elements already carry 32 leading spaces before any content appears.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Because XML markup (the tags themselves) is already verbose, many developers prefer 2-space indentation to keep deeply nested documents readable on a normal screen width. Four-space indentation is still common in Java and .NET ecosystems where it matches the surrounding source code style.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">How XML formatters add indentation</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      A formatter doesn't add spaces to raw text — it has to understand the document structure first. The process is always:
+    </p>
+    <ol style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; padding-left:20px; margin-top:8px; display:flex; flex-direction:column; gap:4px;">
+      <li><strong>Parse</strong> the XML into an in-memory node tree (elements, attributes, text nodes, comments, processing instructions).</li>
+      <li><strong>Serialize</strong> the tree back to a string, inserting line breaks and indentation between element nodes while leaving text content intact.</li>
+    </ol>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      In the browser this maps directly to <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">DOMParser</code> for the parse step and <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">XMLSerializer</code> (plus a recursive walk that adds indentation) for the output. Because the document is fully parsed first, the parse step is also where malformed XML is caught — a formatter that won't format your input is usually telling you the XML isn't well-formed.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Formatting also normalizes incidental details: attribute quoting becomes consistent, self-closing vs. empty-element forms may be standardized (<code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;br&gt;&lt;/br&gt;</code> → <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;br/&gt;</code>), and redundant inter-element whitespace is replaced with the chosen indent.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Choosing an indentation style</h2>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px;">
+      <li><strong>2 spaces:</strong> Common for XML in web tooling, config files, and VS Code. Keeps deeply nested, verbose XML readable.</li>
+      <li><strong>4 spaces:</strong> The Visual Studio default and common in Java/.NET projects, where it matches surrounding source.</li>
+      <li><strong>Tab:</strong> Lets each developer pick their own display width; sometimes preferred in mixed-language repositories.</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      As with any code formatting, consistency matters more than the specific choice. If the XML lives alongside source in a repository, follow whatever the project's <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">.editorconfig</code> already enforces.
+    </p>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Indent your XML instantly</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste any XML and choose your indent size — 2 spaces, 4 spaces, or tab. Formats automatically and flags errors as you type.
+    </p>
+    <a href="/" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Formatter →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does indentation change the meaning of an XML document?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Usually not. Whitespace between elements is normally insignificant. But whitespace inside an element with text content is significant by default, so a formatter that reflows text could change the data. Good formatters only re-indent element-only content and leave text and mixed content untouched.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the standard indentation for XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">There is no single mandatory standard. Two spaces is common in web and config contexts; four spaces is common in Java and .NET projects. Visual Studio defaults to four spaces, while VS Code and most web tooling default to two.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Why does my formatted XML have different whitespace than the original?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">A formatter parses the XML into a node tree, drops insignificant inter-element whitespace, and re-serializes with consistent indentation. The output is functionally identical for element-only content but the original layout is replaced. Use xml:space="preserve" to keep significant whitespace.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Can I indent XML that has mixed content?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Mixed content — text and child elements together inside one element, like an HTML paragraph with inline tags — generally should not be re-indented, because the surrounding text is significant. A safe formatter detects mixed content and leaves it on a single logical block rather than breaking it across indented lines.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

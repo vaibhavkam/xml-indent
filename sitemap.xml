@@ -65,4 +65,10 @@
   </url>
   <url><loc>https://xml-indent.com/format-xml-python.html</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-06-02</lastmod></url>
   <url><loc>https://xml-indent.com/format-xml-javascript.html</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-06-02</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2026-06-06</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/how-xml-indentation-works.html</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-06-06</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/xpath-tester-guide.html</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-06-06</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/xml-diff-guide.html</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-06-06</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/check-xml-syntax.html</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-06-06</lastmod></url>
+  <url><loc>https://xml-indent.com/guides/how-to-minify-xml.html</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-06-06</lastmod></url>
 </urlset>

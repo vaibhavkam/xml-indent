@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparing Two XML Files: A Guide to XML Diffing</title>
+  <meta name="description" content="A plain text diff is misleading for XML. Learn why, what a structure-aware XML diff shows, how to compare two XML files online, and how to diff XML in code.">
+  <meta name="keywords" content="xml diff, compare xml online, xml difference checker, compare xml files, xml diff tool, diff xml online, xml comparison tool">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/xml-diff-guide.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="Comparing Two XML Files: A Guide to XML Diffing">
+  <meta property="og:description" content="Why a text diff is misleading for XML, what a structure-aware diff shows, and how to compare XML online or in code.">
+  <meta property="og:url" content="https://xml-indent.com/guides/xml-diff-guide.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Why not just use a normal text diff for XML?", "acceptedAnswer": { "@type": "Answer", "text": "A text diff compares lines, so reformatting, reindenting, or reordering attributes shows up as differences even though the data is identical. It also misses that two lines which look different may be the same element moved. A structure-aware XML diff compares the parsed node trees, so it reports only real changes." } },
+      { "@type": "Question", "name": "Is attribute order significant in XML?", "acceptedAnswer": { "@type": "Answer", "text": "No. The XML specification states that the order of attributes on an element is not significant. A correct XML diff treats id='1' class='x' and class='x' id='1' as identical, whereas a text diff would flag them as different." } },
+      { "@type": "Question", "name": "Does element order matter when comparing XML?", "acceptedAnswer": { "@type": "Answer", "text": "Usually yes. Unlike attributes, the order of child elements is significant in XML and can carry meaning, so most diff tools treat reordered children as a change. Some schema-aware tools can be told that a particular element's children are unordered, but the safe default is to treat element order as significant." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>Comparing Two XML Files: A Guide to XML Diffing</h1>
+    <p>A line-by-line text diff lies about XML. Here's why, what a structure-aware diff shows instead, and how to compare two XML documents reliably.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Why a text diff is the wrong tool</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The diff built into Git, your editor, or <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">diff</code> on the command line compares text line by line. That works for source code, where layout is meaningful, but it actively misleads for XML, because XML's textual form has a lot of freedom that doesn't change the data:
+    </p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px;">
+      <li>Whitespace and indentation between elements is insignificant, but a text diff flags every reindentation as a change.</li>
+      <li>Attribute order is not significant in XML, yet a text diff treats <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;a x="1" y="2"/&gt;</code> and <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;a y="2" x="1"/&gt;</code> as different.</li>
+      <li><code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;tag&gt;&lt;/tag&gt;</code> and <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;tag/&gt;</code> are the same empty element, but look different as text.</li>
+      <li>Single vs. double quotes around attribute values, or different but equivalent entity escapes, all read as edits.</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      The result is a diff full of noise: dozens of "changes" where the documents are in fact data-identical, drowning the one real difference you were looking for.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What a structure-aware diff does instead</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      A proper XML diff parses both documents into node trees first, then compares the trees rather than the text. Because it works on structure, it can normalize away everything that doesn't matter — indentation, attribute order, empty-element form — and report only genuine differences:
+    </p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px;">
+      <li>An element that exists on one side but not the other (added or removed).</li>
+      <li>An attribute that was added, removed, or whose value changed.</li>
+      <li>Text content that differs.</li>
+      <li>Child elements that were reordered (element order <em>is</em> significant, unlike attributes).</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Consider these two documents. A text diff shows several changed lines; a structure-aware diff reports exactly one change — the price.
+    </p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
+      <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.8rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:0;"><code>&lt;book id="bk101"
+      category="tech"&gt;
+  &lt;price&gt;44.95&lt;/price&gt;
+&lt;/book&gt;</code></pre>
+      <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.8rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:0;"><code>&lt;book category="tech" id="bk101"&gt;
+    &lt;price&gt;49.95&lt;/price&gt;
+&lt;/book&gt;</code></pre>
+    </div>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      The reindentation and the swapped attribute order are correctly ignored; only <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">44.95 → 49.95</code> is a real difference.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">A pragmatic pre-step: normalize, then diff</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      If you only have a text diff available, you can get much of the benefit by <strong>canonicalizing</strong> both files first, then diffing the results. Run each document through the same formatter with the same indent settings so layout is identical, and the text diff is left to surface only content changes. C14N (XML Canonicalization, the same normalization used for XML digital signatures) goes further — it also normalizes attribute order and namespace declarations — but a consistent pretty-print covers most everyday cases.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Diffing XML programmatically</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      In Python, the <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xmldiff</code> library produces a structure-aware diff and can even emit an edit script describing how to turn one document into the other:
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>from xmldiff import main
+diffs = main.diff_files("old.xml", "new.xml")
+for change in diffs:
+    print(change)</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      In Java, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">XMLUnit</code> is the standard choice and lets you configure whether element order or whitespace should be considered. For .NET, the <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">XmlDiff</code> class in Microsoft's XML Diff and Patch toolkit serves the same role.
+    </p>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Compare two XML files online</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste both documents and get a structure-aware comparison — added, removed, and changed nodes only, with whitespace and attribute order normalized. Runs in your browser.
+    </p>
+    <a href="/diff.html" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Diff →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Why not just use a normal text diff for XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">A text diff compares lines, so reformatting, reindenting, or reordering attributes shows up as differences even though the data is identical. A structure-aware XML diff compares the parsed node trees, so it reports only real changes.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is attribute order significant in XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">No. The XML specification states that attribute order is not significant. A correct XML diff treats id="1" class="x" and class="x" id="1" as identical, whereas a text diff flags them as different.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does element order matter when comparing XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Usually yes. Unlike attributes, the order of child elements is significant in XML and can carry meaning, so most diff tools treat reordered children as a change. Some schema-aware tools can mark a specific element's children as unordered, but treating element order as significant is the safe default.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How can I compare XML when I only have a text diff?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Canonicalize both files first — run each through the same formatter with the same indent settings, or apply C14N — then run the text diff on the normalized output. That removes layout and ordering noise so the diff surfaces only content changes.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

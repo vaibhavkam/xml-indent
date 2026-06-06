@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XPath Tester: How to Test XPath Online</title>
+  <meta name="description" content="Learn how to test XPath expressions online. XPath syntax, axes, predicates, common queries, and how to evaluate XPath against your XML right in the browser.">
+  <meta name="keywords" content="xpath tester, test xpath online, xpath online, xpath evaluator, online xpath, xpath checker, xpath expression">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/xpath-tester-guide.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="XPath Tester: How to Test XPath Online">
+  <meta property="og:description" content="XPath syntax, axes, predicates, common queries, and how to evaluate XPath against your XML in the browser.">
+  <meta property="og:url" content="https://xml-indent.com/guides/xpath-tester-guide.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is XPath used for?", "acceptedAnswer": { "@type": "Answer", "text": "XPath is a query language for selecting nodes in an XML document. It is used to extract values, navigate between elements and attributes, and filter nodes by condition. It underpins XSLT, many scraping and testing tools (like Selenium), and XML processing libraries in nearly every programming language." } },
+      { "@type": "Question", "name": "What is the difference between // and / in XPath?", "acceptedAnswer": { "@type": "Answer", "text": "A single slash selects a direct child at that step, so /catalog/book selects book elements that are direct children of the root catalog. A double slash selects descendants at any depth, so //book selects every book element anywhere in the document regardless of nesting." } },
+      { "@type": "Question", "name": "How do I select an attribute with XPath?", "acceptedAnswer": { "@type": "Answer", "text": "Prefix the attribute name with @. For example //book/@id selects the id attribute of every book element, and //book[@id='bk101'] selects book elements whose id attribute equals bk101. A predicate in square brackets filters by condition." } },
+      { "@type": "Question", "name": "Which XPath version do browsers support?", "acceptedAnswer": { "@type": "Answer", "text": "Browsers implement XPath 1.0 through the document.evaluate() API. XPath 2.0 and 3.1 add types, sequences, and many functions but require a dedicated engine (such as Saxon) and are not available natively in the browser. Most everyday selection and filtering tasks only need XPath 1.0." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>XPath Tester: How to Test XPath Online</h1>
+    <p>XPath is the query language for XML. This guide covers the syntax you actually use, the most common expressions, and how to evaluate them against your own document.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What XPath is</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      XPath (XML Path Language) is a query language for addressing parts of an XML document. Where SQL selects rows from tables, XPath selects <em>nodes</em> from a document tree — elements, attributes, text, comments. An XPath expression describes a path through the tree and, optionally, conditions that the matching nodes must satisfy. The result is a node-set (or, for some expressions, a string, number, or boolean).
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      XPath is everywhere XML is processed: it is the selection language inside XSLT, it powers element location in Selenium and Playwright, and it is exposed by XML libraries in Python (<code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">lxml</code>), Java, .NET, and the browser. Learning it once pays off across all of them.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">A sample document</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">Every example below runs against this catalog:</p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>&lt;catalog&gt;
+  &lt;book id="bk101" category="tech"&gt;
+    &lt;title&gt;XML Developer's Guide&lt;/title&gt;
+    &lt;author&gt;Gambardella&lt;/author&gt;
+    &lt;price&gt;44.95&lt;/price&gt;
+  &lt;/book&gt;
+  &lt;book id="bk102" category="fiction"&gt;
+    &lt;title&gt;Midnight Rain&lt;/title&gt;
+    &lt;author&gt;Ralls&lt;/author&gt;
+    &lt;price&gt;5.95&lt;/price&gt;
+  &lt;/book&gt;
+&lt;/catalog&gt;</code></pre>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">The expressions you use most</h2>
+    <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
+      <thead>
+        <tr style="text-align:left; border-bottom:2px solid var(--border);">
+          <th style="padding:8px 12px; color:var(--text);">Expression</th>
+          <th style="padding:8px 12px; color:var(--text);">Selects</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--text-muted); line-height:1.7;">
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">/catalog/book</code></td><td style="padding:8px 12px;">All <code>book</code> elements that are direct children of the root <code>catalog</code></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book</code></td><td style="padding:8px 12px;">Every <code>book</code> element anywhere in the document</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book/title</code></td><td style="padding:8px 12px;">The <code>title</code> of every book</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book/@id</code></td><td style="padding:8px 12px;">The <code>id</code> attribute of every book</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book[1]</code></td><td style="padding:8px 12px;">The first <code>book</code> (XPath is 1-indexed, not 0)</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book[@id='bk101']</code></td><td style="padding:8px 12px;">The book whose <code>id</code> is <code>bk101</code></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book[price&gt;10]</code></td><td style="padding:8px 12px;">Books whose <code>price</code> child is greater than 10</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//book[last()]</code></td><td style="padding:8px 12px;">The last <code>book</code> in the set</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">//title/text()</code></td><td style="padding:8px 12px;">The text content of every title</td></tr>
+        <tr><td style="padding:8px 12px;"><code style="font-family:var(--font-mono);">count(//book)</code></td><td style="padding:8px 12px;">A number — how many books exist</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Paths, predicates, and axes</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      An XPath expression is a series of <strong>steps</strong> separated by <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">/</code>. Each step has an axis (which direction to look), a node test (what to match), and zero or more predicates (conditions in square brackets). The single slash <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">/</code> means "direct child"; the double slash <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//</code> is shorthand for the descendant axis — "at any depth below."
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      <strong>Predicates</strong> filter a node-set. <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//book[@category='fiction']</code> keeps only books whose category attribute equals fiction. Predicates can stack and can contain functions: <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//book[price&gt;10][position()=1]</code>.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      <strong>Axes</strong> let you move in directions other than down. Beyond the default child axis, the most useful are <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">parent::</code>, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">ancestor::</code>, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">following-sibling::</code>, and <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">attribute::</code> (which <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">@</code> abbreviates). For example, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//title[text()='Midnight Rain']/parent::book/@id</code> walks from a title back up to its book and reads the id.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">The namespace gotcha</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The single most common reason an XPath "returns nothing" on real-world documents is namespaces. If your XML declares a default namespace — <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;feed xmlns="http://www.w3.org/2005/Atom"&gt;</code> — then <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//entry</code> matches nothing, because <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">entry</code> is now in that namespace, not the empty one.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      In a full engine you bind a prefix and query <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//atom:entry</code>. A quick workaround that needs no namespace setup is to match by local name: <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">//*[local-name()='entry']</code>. It's verbose but reliable when you just need to extract data fast.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">XPath 1.0 vs 2.0/3.1</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Browsers — and therefore most online testers — implement <strong>XPath 1.0</strong> via <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">document.evaluate()</code>. XPath 2.0 and 3.1 add a type system, sequences, regular-expression functions, and conditional expressions, but they require a dedicated engine like Saxon and aren't available natively in the browser. The good news: the selection and filtering tasks most people reach for — navigate, filter by attribute or value, count, extract text — are all fully covered by 1.0.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Testing XPath against your own XML</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The fastest way to learn XPath is to run expressions against a real document and watch what matches. An online tester parses your XML, evaluates the expression with <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">document.evaluate()</code>, and lists the matching nodes and their values — all client-side, so your data never leaves the browser. That tight loop (tweak expression → see matches) is how the table above becomes second nature.
+    </p>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Test XPath expressions now</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste your XML, type an XPath expression, and see every matching node instantly. Runs entirely in your browser — nothing is uploaded.
+    </p>
+    <a href="/xpath.html" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XPath Tester →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is XPath used for?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">XPath is a query language for selecting nodes in an XML document — extracting values, navigating between elements and attributes, and filtering by condition. It underpins XSLT, browser automation tools like Selenium, and XML libraries in nearly every language.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the difference between // and / in XPath?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">A single slash selects a direct child at that step, so /catalog/book selects books that are direct children of catalog. A double slash selects descendants at any depth, so //book selects every book element anywhere in the document.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I select an attribute with XPath?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Prefix the attribute name with @. //book/@id selects the id attribute of every book, and //book[@id='bk101'] selects books whose id equals bk101. The square brackets hold a predicate that filters by condition.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Why does my XPath return no results?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">The usual cause is namespaces. If the document declares a default namespace, an unprefixed name like //entry won't match. Either bind a prefix and query //ns:entry, or match by local name with //*[local-name()='entry'].</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Which XPath version do browsers support?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Browsers implement XPath 1.0 through document.evaluate(). XPath 2.0 and 3.1 add types, sequences, and many functions but require a dedicated engine such as Saxon and are not available natively in the browser. Most selection and filtering only needs 1.0.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML Guides & Reference — xml-indent.com</title>
+  <meta name="description" content="Practical guides for working with XML — formatting, indentation, validation, syntax checking, diffing, minifying, and XPath. Free, written for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="XML Guides & Reference — xml-indent.com">
+  <meta property="og:description" content="Practical guides for working with XML — formatting, validation, minification, diffing, syntax checking, and XPath.">
+  <meta property="og:url" content="https://xml-indent.com/guides/">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>XML Guides & Reference</h1>
+    <p>Practical guides for understanding and working with XML — from indentation and syntax to real-world tooling like XPath and diffing.</p>
+  </div>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:20px;">Formatting & Indentation</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;">
+
+      <a href="/guides/how-xml-indentation-works.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">How XML Indentation Works</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">Why whitespace between elements is usually ignored, when it isn't, and how formatters pretty-print XML.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+      <a href="/format-xml-python.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">Format XML in Python</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">minidom, ElementTree.indent, and lxml — complete code examples for pretty-printing XML.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+      <a href="/format-xml-javascript.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">Format XML in JavaScript</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">DOMParser, XMLSerializer, and a recursive pretty-printer for Node.js and the browser.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:20px;">Validation & Errors</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;">
+
+      <a href="/guides/check-xml-syntax.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">How to Check XML Syntax</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">Well-formed vs valid, how to check XML in the browser, with xmllint, in Python, and the errors that break it.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:20px;">Minification & Comparison</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;">
+
+      <a href="/guides/how-to-minify-xml.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">How to Minify XML (and When You Shouldn't)</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">What's safe to strip, why whitespace inside elements is risky, and how much size you actually save.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+      <a href="/guides/xml-diff-guide.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">Comparing Two XML Files: A Guide to XML Diffing</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">Why a text diff fails for XML, what a structure-aware diff shows, and how to compare programmatically.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:20px;">Querying XML</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;">
+
+      <a href="/guides/xpath-tester-guide.html" style="display:block; border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px; text-decoration:none; color:inherit; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-weight:600; font-size:0.95rem; color:var(--text); margin-bottom:6px;">XPath Tester: How to Test XPath Online</div>
+        <div style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">XPath syntax basics, axes and predicates, common expressions, and how to evaluate them in the browser.</div>
+        <div style="margin-top:12px; font-size:0.8rem; color:var(--primary); font-weight:500;">Read guide →</div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

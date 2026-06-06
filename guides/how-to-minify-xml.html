@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Minify XML (and When You Shouldn't)</title>
+  <meta name="description" content="How to minify XML safely: what whitespace is safe to strip, why text content is risky, how much size you actually save, and when minifying XML is a bad idea.">
+  <meta name="keywords" content="minify xml, compress xml, xml minifier, xml minify, reduce xml size, strip xml whitespace">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/how-to-minify-xml.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="How to Minify XML (and When You Shouldn't)">
+  <meta property="og:description" content="What whitespace is safe to strip, why text content is risky, how much size you save, and when minifying XML is a bad idea.">
+  <meta property="og:url" content="https://xml-indent.com/guides/how-to-minify-xml.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Does minifying XML change its meaning?", "acceptedAnswer": { "@type": "Answer", "text": "It should not, if done correctly. Removing whitespace between elements is safe because that whitespace is insignificant. But removing whitespace inside elements that contain text is not safe — that whitespace can be part of the data. A correct minifier strips only inter-element whitespace and leaves text content alone." } },
+      { "@type": "Question", "name": "How much smaller is minified XML?", "acceptedAnswer": { "@type": "Answer", "text": "For typical pretty-printed XML, minifying removes the indentation and line breaks and usually shaves 15 to 30 percent off the byte count. The savings are smaller than for JSON because XML's tags are inherently verbose. Over HTTP with gzip or Brotli enabled, the real-world transfer difference is much smaller, since compression already collapses repeated whitespace." } },
+      { "@type": "Question", "name": "Should I minify XML before sending it over a network?", "acceptedAnswer": { "@type": "Answer", "text": "Usually it is not worth it. If the transport uses gzip or Brotli — as almost all HTTP does — compression removes most of the redundancy that minification targets, so the extra step buys little. Minify when bytes are billed or stored at rest uncompressed; keep XML formatted when it will be read or debugged by humans." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>How to Minify XML (and When You Shouldn't)</h1>
+    <p>Minifying XML strips the whitespace that makes it readable. Done right it's lossless; done carelessly it corrupts data. Here's how to tell the difference.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What minification actually removes</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Minifying XML means stripping the whitespace that was added for readability: the indentation at the start of each line and the line breaks between elements. The goal is a single, compact line that parses to the exact same node tree as the formatted original.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      The key word is <em>between</em>. Whitespace between elements — the gaps a formatter inserts to nest things — is insignificant and safe to remove. Whitespace <em>inside</em> an element that holds text is a different story, and it's where naive minifiers go wrong.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">The part that's risky</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Consider an element whose text matters:
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>&lt;message&gt;Dear customer,
+  thank you for your order.&lt;/message&gt;</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      A careless minifier that collapses all whitespace would turn the newline and indentation inside <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;message&gt;</code> into a single space — or remove it entirely — changing the text the application receives. The same hazard applies to <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;pre&gt;</code>-style content, embedded code, and anything marked <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xml:space="preserve"</code>.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      A correct XML minifier parses the document first, then removes only the whitespace-only text nodes that sit <em>between</em> elements. Text nodes that contain non-whitespace characters are preserved byte-for-byte. This is the same principle as formatting in reverse: operate on the parsed tree, never on the raw string with a blunt regex.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">How much do you actually save?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      For typical pretty-printed XML, minification removes indentation and line breaks and trims roughly <strong>15–30%</strong> of the byte count. That's less than the savings you'd see minifying JSON, because XML spends so many bytes on the tags themselves — and tags survive minification untouched.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      More importantly, that raw saving rarely translates to the wire. Almost all HTTP traffic is sent with gzip or Brotli compression, and those algorithms are extremely good at collapsing the repetitive whitespace that minification removes. After compression, a formatted and a minified document are often within a couple of percent of each other. Minifying before gzip mostly saves work that gzip was going to do anyway.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">When to minify — and when not to</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;"><strong>Worth minifying:</strong></p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px;">
+      <li>Data stored at rest uncompressed, where every byte is billed (some document stores, message queues).</li>
+      <li>Embedding XML inside another payload where compression isn't applied to that field.</li>
+      <li>High-volume APIs without transport compression, where the cumulative byte saving is real.</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;"><strong>Not worth it:</strong></p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px;">
+      <li>Anything served over gzip/Brotli HTTP — compression already does the work.</li>
+      <li>Config files, logs, or documents humans read and edit — minifying destroys readability for a negligible gain.</li>
+      <li>Files in version control — minified XML produces useless one-line diffs.</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Because minification is lossless for element-only content, it's safely reversible: run a minified document back through a formatter and you get readable XML again. Keep the formatted version as the source of truth and minify only at the point of use.
+    </p>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Minify your XML now</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Strip inter-element whitespace safely — text content and significant whitespace are preserved. Runs in your browser, and you can re-format it any time.
+    </p>
+    <a href="/minifier.html" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Minifier →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Does minifying XML change its meaning?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">It should not, if done correctly. Removing whitespace between elements is safe because it's insignificant. Removing whitespace inside elements that contain text is not safe — that whitespace can be data. A correct minifier strips only inter-element whitespace and leaves text content alone.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How much smaller is minified XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">For typical pretty-printed XML, minifying removes indentation and line breaks and usually shaves 15–30% off the byte count — less than for JSON, because XML's tags are verbose. Over gzip or Brotli the real transfer difference is much smaller, since compression already collapses whitespace.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Should I minify XML before sending it over a network?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Usually it's not worth it. If the transport uses gzip or Brotli — as almost all HTTP does — compression removes most of the redundancy minification targets. Minify when bytes are billed or stored uncompressed; keep XML formatted when humans will read or debug it.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Can I un-minify XML back to a readable form?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. Minification of element-only content is lossless, so running a minified document through a formatter restores readable, indented XML. Keep the formatted version as your source of truth and minify only at the point of use.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>

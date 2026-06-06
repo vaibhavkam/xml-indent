@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Check XML Syntax (Well-Formed vs Valid)</title>
+  <meta name="description" content="How to check XML syntax: the difference between well-formed and valid, the errors that break XML, and how to verify XML in the browser, with xmllint, and in Python.">
+  <meta name="keywords" content="check xml syntax, xml syntax checker, xml syntax validator, validate xml, verify xml syntax, check for valid xml, xml lint, xmllint online">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/guides/check-xml-syntax.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <meta property="og:title" content="How to Check XML Syntax (Well-Formed vs Valid)">
+  <meta property="og:description" content="The difference between well-formed and valid, the errors that break XML, and how to verify XML in the browser, with xmllint, and in Python.">
+  <meta property="og:url" content="https://xml-indent.com/guides/check-xml-syntax.html">
+  <meta property="og:type" content="article">
+
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is the difference between well-formed and valid XML?", "acceptedAnswer": { "@type": "Answer", "text": "Well-formed means the document follows XML syntax rules — one root element, every tag closed and properly nested, attributes quoted, special characters escaped. Valid means it is well-formed AND conforms to a schema (DTD, XSD, or RELAX NG) that defines which elements and attributes are allowed. All valid XML is well-formed, but not all well-formed XML is valid." } },
+      { "@type": "Question", "name": "What are the most common XML syntax errors?", "acceptedAnswer": { "@type": "Answer", "text": "Unclosed or mismatched tags, more than one root element, unescaped & < or > characters in text, missing quotes around attribute values, and incorrect nesting (closing a parent before its child). Any one of these makes the document not well-formed and stops parsing." } },
+      { "@type": "Question", "name": "How do I check XML syntax on the command line?", "acceptedAnswer": { "@type": "Answer", "text": "Use xmllint, which ships with libxml2 on most Linux and macOS systems. Run xmllint --noout file.xml to check that a file is well-formed; it prints nothing on success and an error with a line number on failure. Add --schema schema.xsd or --dtdvalid file.dtd to also check validity against a schema." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>How to Check XML Syntax</h1>
+    <p>"Is my XML correct?" has two answers: is it well-formed, and is it valid? This guide explains both, the errors that break each, and how to check them.</p>
+  </div>
+
+  <section style="margin-top:24px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Well-formed vs valid</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      These two terms are often used interchangeably, but they mean different things and you usually want only one of them.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      <strong>Well-formed</strong> means the document obeys XML's basic syntax rules. There is exactly one root element, every start tag has a matching end tag, elements are properly nested, attribute values are quoted, and reserved characters are escaped. Well-formedness is a property of any XML document and requires no external definition — a parser can check it on its own.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      <strong>Valid</strong> is a stronger claim: the document is well-formed <em>and</em> conforms to a schema — a DTD, XSD (XML Schema), or RELAX NG grammar — that defines which elements may appear, in what order, with which attributes and data types. Validation requires that schema. All valid XML is well-formed; the reverse is not true.
+    </p>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Most of the time, when people ask to "check XML syntax" or "verify XML," they mean well-formedness — does it parse? That's what a browser-based checker tests. Validation against a schema is a separate, more specialized step.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">The errors that break well-formedness</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      Almost every "XML won't parse" problem is one of these:
+    </p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:8px; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+      <li><strong>Unclosed or mismatched tags.</strong> <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;name&gt;Alice&lt;/Name&gt;</code> fails — XML is case-sensitive, so <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">name</code> and <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">Name</code> are different tags.</li>
+      <li><strong>More than one root element.</strong> A document may have exactly one top-level element. Two siblings at the top is the classic "junk after document element" error.</li>
+      <li><strong>Unescaped special characters.</strong> A literal <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;</code>, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;</code>, or <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&gt;</code> in text must be written as <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;amp;</code>, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;lt;</code>, <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;gt;</code> (or wrapped in <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;![CDATA[ ]]&gt;</code>).</li>
+      <li><strong>Unquoted attribute values.</strong> <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;book id=bk101&gt;</code> is invalid; attribute values must be in single or double quotes.</li>
+      <li><strong>Improper nesting.</strong> <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</code> closes the parent before the child. Tags must nest like matched parentheses.</li>
+      <li><strong>Content before the declaration.</strong> The <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;?xml version="1.0"?&gt;</code> declaration, if present, must be the very first thing — not even a blank line or BOM before it.</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      A parser reports the first error it hits with a line and column number, then stops — XML parsers do not recover and continue, so fix the first error and re-check.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Checking in the browser</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      The browser has a built-in XML parser, which is what online checkers use:
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>const doc = new DOMParser()
+  .parseFromString(xmlString, "application/xml");
+const error = doc.querySelector("parsererror");
+if (error) {
+  console.log("Not well-formed:", error.textContent);
+} else {
+  console.log("Well-formed ✓");
+}</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      If parsing fails, the browser inserts a <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;parsererror&gt;</code> element describing the problem, usually with a line number. This runs entirely client-side, so the XML never leaves the page.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Checking on the command line with xmllint</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">xmllint</code> ships with libxml2 and is preinstalled on most Linux and macOS systems. It is the standard way to check XML from a shell or in CI:
+    </p>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code># Well-formedness check (no output = success)
+xmllint --noout file.xml
+
+# Validate against an XSD schema
+xmllint --noout --schema schema.xsd file.xml
+
+# Validate against a DTD
+xmllint --noout --dtdvalid doc.dtd file.xml</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      On success it prints nothing and exits 0 — handy for scripting. On failure it prints the error with a line number and exits non-zero.
+    </p>
+  </section>
+
+  <section style="margin-top:32px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Checking in Python</h2>
+    <pre style="background:var(--primary-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:0.85rem; line-height:1.6; overflow-x:auto; color:var(--text); margin:8px 0 16px;"><code>import xml.etree.ElementTree as ET
+
+try:
+    ET.parse("file.xml")
+    print("Well-formed ✓")
+except ET.ParseError as e:
+    print(f"Not well-formed: {e}")  # includes line:column</code></pre>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      For schema validation, the <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">lxml</code> library adds <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">lxml.etree.XMLSchema</code>, which checks a parsed document against an XSD and reports exactly which rule failed.
+    </p>
+  </section>
+
+  <section style="margin-top:32px; padding:20px 24px; background:var(--primary-light); border-radius:var(--radius-sm); border-left:3px solid var(--primary);">
+    <h2 style="font-size:1rem; font-weight:600; margin-bottom:8px;">Check your XML syntax now</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:12px;">
+      Paste your XML and get an instant well-formedness check with the exact line of any error. Runs in your browser — nothing is uploaded.
+    </p>
+    <a href="/validator.html" style="display:inline-block; background:var(--primary); color:#fff; padding:8px 20px; border-radius:var(--radius-sm); font-weight:500; font-size:0.9rem; text-decoration:none;">Open XML Validator →</a>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What is the difference between well-formed and valid XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Well-formed means the document follows XML syntax rules — one root, every tag closed and nested, attributes quoted, special characters escaped. Valid means it is well-formed AND conforms to a schema (DTD, XSD, or RELAX NG). All valid XML is well-formed, but not all well-formed XML is valid.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What are the most common XML syntax errors?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Unclosed or mismatched tags, more than one root element, unescaped & < or > in text, missing quotes around attribute values, and improper nesting. Any one of these makes the document not well-formed and stops parsing at that point.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I check XML syntax on the command line?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Use xmllint, which ships with libxml2 on most Linux and macOS systems. Run xmllint --noout file.xml to check well-formedness; it prints nothing on success and an error with a line number on failure. Add --schema or --dtdvalid to also check validity.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is XML case-sensitive?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. Element and attribute names are case-sensitive, so &lt;Book&gt; and &lt;book&gt; are different elements and a start tag must match its end tag exactly in case. This is a frequent source of "mismatched tag" errors for people coming from HTML.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, minify and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<script src="/js/theme.js"></script>
+</body>
+</html>
