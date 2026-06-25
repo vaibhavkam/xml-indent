@@ -62,7 +62,22 @@ function convert() {
   if (!raw) { clearOutput(); return; }
   const mode = getMode();
   if (mode === 'xml2json') xmlToJson(raw);
+  else if (mode === 'xml2csv') xmlToCsv(raw);
   else xmlToYaml(raw);
+}
+
+function xmlToCsv(raw) {
+  const result = parseXML(raw);
+  if (result.error) {
+    highlightErrorLine('inputArea', result.line);
+    showError(result.error, result.line);
+    setStatus(inputStatus, 'invalid', '✗ Invalid XML');
+    return;
+  }
+  const obj = xmlNodeToObj(result.doc.documentElement);
+  showOutput(objToCsvString(obj), 'csv');
+  setStatus(inputStatus, 'valid', '✓ Valid XML');
+  highlightErrorLine('inputArea', null);
 }
 
 function parseXML(raw) {
@@ -136,6 +151,47 @@ function xmlNodeToObj(node) {
   return obj;
 }
 
+// Convert a parsed object/array into CSV. An array becomes rows; a single object
+// whose only property is an array of objects uses that array as the rows
+// (the common XML "list" shape, e.g. <library><book/>…); otherwise the object is
+// emitted as one row. Nested objects flatten to dot-notation columns; scalar
+// arrays are joined.
+function objToCsvString(data) {
+  let rows;
+  if (Array.isArray(data)) {
+    rows = data;
+  } else if (data && typeof data === 'object') {
+    const keys = Object.keys(data);
+    const arrKey = keys.find(k => Array.isArray(data[k]) && data[k].some(x => x && typeof x === 'object'));
+    rows = (keys.length === 1 && arrKey) ? data[arrKey] : [data];
+  } else {
+    rows = [data];
+  }
+  rows = rows.map(r => (r !== null && typeof r === 'object' && !Array.isArray(r)) ? flattenForCsv(r) : { value: r });
+  const cols = [];
+  rows.forEach(r => Object.keys(r).forEach(k => { if (!cols.includes(k)) cols.push(k); }));
+  const esc = v => {
+    if (v === null || v === undefined) return '';
+    let s = typeof v === 'object' ? JSON.stringify(v) : String(v);
+    if (/[",\n\r]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  };
+  const lines = [cols.map(esc).join(',')];
+  rows.forEach(r => lines.push(cols.map(c => esc(r[c])).join(',')));
+  return lines.join('\r\n');
+}
+
+function flattenForCsv(obj, prefix, out) {
+  out = out || {}; prefix = prefix || '';
+  for (const [k, v] of Object.entries(obj)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (v !== null && typeof v === 'object' && !Array.isArray(v)) flattenForCsv(v, key, out);
+    else if (Array.isArray(v) && v.every(x => x === null || typeof x !== 'object')) out[key] = v.join('; ');
+    else out[key] = v;
+  }
+  return out;
+}
+
 function cleanParseError(msg) {
   return msg
     .replace(/This page contains the following errors:\s*/i, '')
@@ -171,7 +227,8 @@ function showError(message, lineNum) {
 }
 
 function clearOutput() {
-  const hint = getMode() === 'xml2json' ? 'JSON output will appear here...' : 'YAML output will appear here...';
+  const m = getMode();
+  const hint = m === 'xml2json' ? 'JSON output will appear here...' : m === 'xml2csv' ? 'CSV output will appear here...' : 'YAML output will appear here...';
   outputEl.innerHTML = `<span style="color:var(--text-muted);">${hint}</span>`;
   outputEl.style.cssText = 'white-space:pre; overflow:auto; cursor:text; user-select:text; padding:16px;';
   setStatus(outputStatus, 'idle', '');
@@ -213,8 +270,8 @@ function downloadOutput() {
   const text = outputEl.textContent;
   if (!text) return;
   const mode = getMode();
-  const ext = mode === 'xml2json' ? 'json' : 'yaml';
-  const type = mode === 'xml2json' ? 'application/json' : 'application/x-yaml';
+  const ext = mode === 'xml2json' ? 'json' : mode === 'xml2csv' ? 'csv' : 'yaml';
+  const type = mode === 'xml2json' ? 'application/json' : mode === 'xml2csv' ? 'text/csv' : 'application/x-yaml';
   const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
