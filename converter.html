@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XML Converter — Convert XML to JSON or YAML Online Free</title>
-  <meta name="description" content="Convert XML to JSON or XML to YAML online — free. Instant one-way conversion from XML to other formats. 100% browser-based, no signup required.">
+  <title>XML Converter — Convert XML to JSON, YAML or CSV Online</title>
+  <meta name="description" content="Convert XML to JSON, YAML or CSV online — free. Instant one-way conversion from XML to other formats. 100% browser-based, no signup required.">
   <meta name="keywords" content="xml to json, xml to yaml, xml converter, convert xml to json, convert xml to yaml, xml json converter, xml yaml converter">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://xml-indent.com/converter.html">
-  <meta property="og:title" content="XML Converter — Convert XML to JSON or YAML Online Free">
-  <meta property="og:description" content="Convert XML to JSON or XML to YAML instantly. Free, browser-based, no signup required.">
+  <meta property="og:title" content="XML Converter — Convert XML to JSON, YAML or CSV Online">
+  <meta property="og:description" content="Convert XML to JSON, YAML or CSV instantly. Free, browser-based, no signup required.">
   <meta property="og:url" content="https://xml-indent.com/converter.html">
   <meta property="og:type" content="website">
   <link rel="icon" href="/img/icon.png">
@@ -21,11 +21,11 @@
     "@type": "WebApplication",
     "name": "XML Converter",
     "url": "https://xml-indent.com/converter.html",
-    "description": "Free online XML converter — convert XML to JSON or XML to YAML",
+    "description": "Free online XML converter — convert XML to JSON, YAML or CSV",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0" },
-    "featureList": ["XML to JSON conversion", "XML to YAML conversion", "Syntax validation", "Download output"]
+    "featureList": ["XML to JSON conversion", "XML to YAML conversion", "XML to CSV conversion", "Syntax validation", "Download output"]
   }
   </script>
 
@@ -65,7 +65,7 @@
 <aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
 <main>
   <div class="page-header">
-    <h1>XML Converter — Convert XML to JSON or YAML Online Free</h1>
+    <h1>XML Converter — Convert XML to JSON, YAML or CSV Online</h1>
     <p>Convert XML to JSON or YAML instantly. Free, browser-based, no signup.</p>
   </div>
 
@@ -73,6 +73,7 @@
     <select id="convMode" onchange="updatePlaceholder()" style="font-size:0.95rem; font-weight:600; padding:8px 32px 8px 12px;">
       <option value="xml2json">XML → JSON</option>
       <option value="xml2yaml">XML → YAML</option>
+      <option value="xml2csv">XML → CSV</option>
     </select>
   </div>
 
@@ -126,6 +127,15 @@
       (e.g. <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;book id="1"&gt;</code> becomes <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">{"@id": "1"}</code>).
       Repeated child elements with the same tag name are automatically grouped into arrays.
     </p>
+    <h3 style="font-size:1rem; font-weight:600; margin:20px 0 8px;">Converting XML to CSV</h3>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      XML to CSV works best on a <strong>list of repeated elements</strong> — for example a
+      <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;library&gt;</code> of
+      <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;book&gt;</code> elements. Each repeated element becomes a row and each
+      child element or attribute a column, so you can open the result directly in Excel or Google Sheets. Nested
+      elements are flattened into dot-notation columns (e.g. <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">author.name</code>),
+      attributes appear as <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">@</code>-prefixed columns, and values containing commas or quotes are escaped per RFC 4180.
+    </p>
   </section>
 
   <section style="margin-top:40px;">
@@ -134,6 +144,10 @@
       <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
         <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is the conversion lossless?</summary>
         <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Not fully. XML has features (namespaces, processing instructions, mixed content) that don't map cleanly to JSON or YAML. For typical data-oriented XML, the conversion preserves all elements, attributes, and text content.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I convert XML to CSV?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Choose "XML → CSV" and paste XML containing a list of repeated elements (e.g. a list of <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;book&gt;</code> elements). Each repeated element becomes a row and each child element or attribute a column. Click Download to save a <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">.csv</code> file for Excel or Google Sheets.</p>
       </details>
       <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
         <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is my data safe?</summary>
@@ -148,6 +162,7 @@
     "@type": "FAQPage",
     "mainEntity": [
       { "@type": "Question", "name": "Is the conversion lossless?", "acceptedAnswer": { "@type": "Answer", "text": "Not fully. For typical data-oriented XML, all elements, attributes, and text content are preserved. Namespaces and processing instructions may not map cleanly." } },
+      { "@type": "Question", "name": "How do I convert XML to CSV?", "acceptedAnswer": { "@type": "Answer", "text": "Choose XML to CSV and paste XML containing a list of repeated elements. Each repeated element becomes a row and each child element or attribute a column. Download saves a .csv file for Excel or Google Sheets." } },
       { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All conversion happens in your browser. No data is sent to any server." } }
     ]
   }
