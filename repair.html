@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML Repair — Fix Broken or Invalid XML Online Free</title>
+  <meta name="description" content="Fix broken XML online — free. Auto-repair unescaped ampersands, unquoted attributes, smart quotes and unclosed tags, then format. 100% in your browser, nothing uploaded.">
+  <meta name="keywords" content="xml repair, fix xml, xml fixer, repair xml, fix xml online, invalid xml fixer, xml corrector, fix xml format">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xml-indent.com/repair.html">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <meta property="og:title" content="XML Repair — Fix Broken or Invalid XML Online Free">
+  <meta property="og:description" content="Auto-fix broken XML: unescaped &amp;, unquoted attributes, smart quotes and unclosed tags — then format. 100% private, runs in your browser.">
+  <meta property="og:url" content="https://xml-indent.com/repair.html">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/img/icon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "XML Repair",
+    "url": "https://xml-indent.com/repair.html",
+    "description": "Free online XML repair tool — fix unescaped ampersands, unquoted attributes, smart quotes and unclosed tags, then format.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": ["Escape unescaped ampersands", "Quote unquoted attributes", "Fix smart quotes", "Close unclosed tags", "Format repaired XML"],
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6V2QQHMTY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W6V2QQHMTY');
+  </script>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/img/title.png" alt="XML Indent" height="22"></a>
+    <ul class="nav-links">
+      <li><a href="/">Formatter</a></li>
+      <li><a href="/validator.html">Validator</a></li>
+      <li><a href="/repair.html" class="active">Repair</a></li>
+      <li><a href="/minifier.html">Minifier</a></li>
+      <li><a href="/diff.html">Diff</a></li>
+      <li><a href="/converter.html">Converter</a></li>
+      <li><a href="/xpath.html">XPath Tester</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-sister">
+        <a href="https://json-indent.com/" title="JSON Indent — free JSON tools"><img src="https://json-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="JSON Indent"></a>
+        <a href="https://yaml-indent.com/" title="YAML Indent — free YAML tools"><img src="https://yaml-indent.com/img/title.png" style="width:112px;height:auto;display:block;" alt="YAML Indent"></a>
+      </div>
+      <a href="/support.html" class="btn-support">☕ Support</a>
+      <button id="themeToggle" class="btn-theme" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+<main>
+  <div class="page-header">
+    <h1>XML Repair — Fix &amp; Correct Invalid XML</h1>
+    <p>Paste broken XML and get it fixed automatically — unescaped ampersands, unquoted attributes, smart quotes and unclosed tags are repaired, then the result is formatted. Everything runs in your browser; nothing is uploaded.</p>
+    <div style="display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:5px 12px; font-size:0.8rem; font-weight:600; color:var(--success); background:color-mix(in srgb, var(--success) 10%, transparent); border:1px solid color-mix(in srgb, var(--success) 25%, transparent); border-radius:999px;">
+      <span aria-hidden="true">🔒</span> 100% private — runs in your browser, nothing uploaded
+    </div>
+  </div>
+
+  <div class="editor-layout two-col">
+    <!-- Input -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Broken XML</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="loadSample()">Sample</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <div class="editor-with-lines">
+        <div class="line-gutter" id="gutter-inputArea"><div>1</div></div>
+        <textarea
+          id="inputArea"
+          placeholder="Paste broken XML here, e.g. <note><to>Tove<from>Jani & co</from>"
+          oninput="onInput()"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <div class="status-bar">
+        <span id="inputStatus" class="status-badge idle"></span>
+        <span id="inputStats" style="font-size:0.8rem; color:var(--text-muted);"></span>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="editor-panel">
+      <div class="editor-panel-header">
+        <span class="editor-panel-title">Repaired XML</span>
+        <div class="editor-panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="copyOutput()">Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="downloadOutput()">Download</button>
+        </div>
+      </div>
+      <div id="outputArea" class="output-area" tabindex="0" style="white-space:pre; overflow:auto; cursor:text; user-select:text; outline:none; padding:16px;"><span style="color:var(--text-muted);">Repaired XML will appear here…</span></div>
+      <div class="status-bar">
+        <span id="outputStatus" class="status-badge idle"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="fixList" style="display:none; margin-top:14px; padding:12px 16px; font-size:0.85rem; line-height:1.6; color:var(--text-muted); background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm);"></div>
+
+  <section style="margin-top:48px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">What does an XML repair tool fix?</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8;">
+      XML is strict: one unescaped <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;</code> or a single missing closing tag makes the whole document fail to parse.
+      An <strong>XML repair</strong> (or XML fixer) tool detects the most common mistakes and rewrites your input into well-formed XML, then formats it. This repairer fixes:
+    </p>
+    <ul style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; padding-left:20px;">
+      <li><strong>Unescaped ampersands</strong> — turns a bare <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;</code> into <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;amp;</code> (leaving valid entities like <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&amp;lt;</code> untouched)</li>
+      <li><strong>Unquoted attribute values</strong> — turns <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;a href=x.html&gt;</code> into <code style="background:var(--primary-light); padding:1px 5px; border-radius:3px; font-family:var(--font-mono);">&lt;a href="x.html"&gt;</code></li>
+      <li><strong>Unclosed tags</strong> — closes elements left open at the end of the document, in the correct nesting order</li>
+      <li><strong>Smart quotes</strong> — replaces “curly” quotes pasted from documents with straight quotes in markup</li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.8; margin-top:12px;">
+      Once repaired, use the <a href="/" style="color:var(--primary);">XML Formatter</a> to re-indent it, the
+      <a href="/validator.html" style="color:var(--primary);">XML Validator</a> to double-check it, or the
+      <a href="/converter.html" style="color:var(--primary);">XML Converter</a> to turn it into JSON, YAML, or CSV.
+      Note: ambiguous problems — such as a closing tag that doesn't match any open tag, or a tag left open in the
+      middle of the document — are reported rather than guessed, so your data is never silently mangled.
+    </p>
+  </section>
+
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">How do I fix broken XML?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Paste it into the panel on the left — the repairer automatically escapes unescaped ampersands, quotes unquoted attributes, fixes smart quotes, and closes tags left open at the end, then formats the result. Copy the repaired XML from the right panel.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">What's the difference between repair and validate?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">The <a href="/validator.html" style="color:var(--primary);">XML Validator</a> tells you <em>where</em> the error is. The repair tool goes further and <em>fixes</em> the common errors for you automatically, then formats the corrected XML.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Is my data safe?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Yes. All repair runs entirely in your browser. Nothing is uploaded to any server.</p>
+      </details>
+      <details style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px;">
+        <summary style="font-weight:500; cursor:pointer; font-size:0.9rem;">Why can't some XML be repaired automatically?</summary>
+        <p style="color:var(--text-muted); font-size:0.875rem; margin-top:8px; line-height:1.7;">Some errors are ambiguous — a closing tag that matches no open tag, or an element left open in the middle of the document, can be fixed in more than one way. When that happens the tool repairs everything it safely can and shows the remaining parser error so you can finish it by hand.</p>
+      </details>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How do I fix broken XML?", "acceptedAnswer": { "@type": "Answer", "text": "Paste it into xml-indent.com/repair.html — the repairer automatically escapes unescaped ampersands, quotes unquoted attributes, fixes smart quotes, and closes tags left open at the end, then formats the result." } },
+      { "@type": "Question", "name": "What is the difference between XML repair and validation?", "acceptedAnswer": { "@type": "Answer", "text": "An XML validator tells you where the error is. The repair tool fixes the common errors for you automatically, then formats the corrected XML." } },
+      { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All repair runs entirely in your browser. Nothing is uploaded to any server." } },
+      { "@type": "Question", "name": "Why can't some XML be repaired automatically?", "acceptedAnswer": { "@type": "Answer", "text": "Some errors are ambiguous, such as a closing tag that matches no open tag. The tool repairs everything it safely can and shows the remaining parser error so you can finish it by hand." } }
+    ]
+  }
+  </script>
+</main>
+<aside class="side-col"><div class="side-slot">Ad<br>120×600</div></aside>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="/img/title.png" alt="XML Indent" height="19"></div>
+      <p>Free XML tools for developers. Format, validate, repair, minify, convert, diff, and test XPath instantly. No account required.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Tools</h3>
+      <ul>
+        <li><a href="/">XML Formatter</a></li>
+        <li><a href="/validator.html">XML Validator</a></li>
+        <li><a href="/repair.html">XML Repair</a></li>
+        <li><a href="/minifier.html">XML Minifier</a></li>
+        <li><a href="/converter.html">XML Converter</a></li>
+        <li><a href="/diff.html">XML Diff</a></li>
+        <li><a href="/xpath.html">XPath Tester</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Guides</h3>
+      <ul>
+        <li><a href="/guides/">All Guides</a></li>
+        <li><a href="/guides/xpath-tester-guide.html">XPath Tester Guide</a></li>
+        <li><a href="/guides/check-xml-syntax.html">Check XML Syntax</a></li>
+        <li><a href="/format-xml-python.html">Format XML in Python</a></li>
+        <li><a href="/format-xml-javascript.html">Format XML in JavaScript</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Sister Sites</h3>
+      <ul>
+        <li><a href="https://json-indent.com/">JSON Indent</a></li>
+        <li><a href="https://yaml-indent.com/">YAML Indent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/support.html">☕ Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2018&ndash;2026 xml-indent.com. All rights reserved.</span>
+    <span>Made with care for developers.</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="js/line-numbers.js"></script>
+<script src="js/repair.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+</html>
